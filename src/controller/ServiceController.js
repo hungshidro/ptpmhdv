@@ -18,14 +18,14 @@ class ServiceController{
 
             const startService = await prisma.service.create({
                 data: {
-                    student_id: Number(req.query.stu_id),
+                    student_id: Number(req.body.stu_id),
                     class:{
                         create:{
-                            class_code: req.query.code,
-                            name: convertToClass(req.query.code),
-                            day_of_week: Number(req.query.day),
-                            from: Number(req.query.from),
-                            to: Number(req.query.to)
+                            class_code: req.body.code,
+                            name: convertToClass(req.body.code),
+                            day_of_week: Number(req.body.day),
+                            from: Number(req.body.from),
+                            to: Number(req.body.to)
                         }
                     }
                 }
@@ -56,7 +56,7 @@ class ServiceController{
         try {
             
             const stop = await prisma.service.update({
-                where :{id: Number(req.params.id)},
+                where :{id: Number(req.body.id)},
                 data:{is_starting: 0}
             })
 

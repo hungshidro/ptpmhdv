@@ -61,17 +61,17 @@ const runService = async (id) => {
                         //stt = true;
                         const text = 'Mon hoc ' + service.class.name + ' ngay ' + convertWeekDay(day) + ' Tu ' + String(from) 
                         + 'h den ' + String(to) + 'h co the dang ki';
-                        send_mess(5050440769, text)
+                        send_mess(student.telegram, text)
                     }
 
                 }
                 else stt = false;
 
             }
-            else return console.log('service stopped')
+            else return console.log('service stopped ' + id)
 
             //do every 30s
-            await new Promise(r => setTimeout(r, 60000));
+            await new Promise(r => setTimeout(r, 6000));
         }
 
     } catch (error) {

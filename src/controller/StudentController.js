@@ -71,8 +71,8 @@ class StudentController {
             
             const validateStudent = await prisma.student.findMany({
                 where:{
-                    student_code: req.query.code ,
-                    password: req.query.pass
+                    student_code: req.body.code ,
+                    password: req.body.pass
                 }
             })
 
