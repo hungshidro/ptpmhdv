@@ -70,7 +70,7 @@ const runService = async (id) => {
             }
             else return console.log('service stopped ' + id)
 
-            //do every 30s
+            //do every 60s
             await new Promise(r => setTimeout(r, 6000));
         }
 
