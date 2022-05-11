@@ -9,6 +9,8 @@ npm install prisma --save-dev
 
 npm install @prisma/client --save 
 
+npm install axios
+
 npx prisma migrate dev 
 
 chạy server
