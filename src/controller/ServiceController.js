@@ -76,6 +76,34 @@ class ServiceController{
 
     }
 
+    async restartService(req, res){
+
+        try {
+            
+            const stop = await prisma.service.update({
+                where :{id: Number(req.body.id)},
+                data:{is_starting: 1}
+            })
+
+            if(Object.keys(stop).length === 0) return res.json({ok:false, messaage: 'Fail'});
+            else {
+                runService(Number(req.body.id))
+                res.json({ok:true, messaage: stop});
+            }
+
+        } catch (error) {
+            res.status(500).json({
+                ok: false,
+                error: error
+              });
+        }
+
+        finally{
+            async () => await prisma.$disconnect()
+        }
+
+    }
+
     async getService(req,res){
 
         try {

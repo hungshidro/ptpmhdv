@@ -7,30 +7,33 @@ class StudentController {
 
     async addNewStudent(req,res) {
         try {
+
             
             const stu = await prisma.student.findMany({
                 where: {
-                    student_code: Number(req.body.student_code)
+                    student_code: String(req.body.code)
                 }
             })
 
             if(stu.length > 0) return res.json({ok: false, message: "Student was exist"});
 
             else {
+                console.log(req.body.code)
                 const newStu = await prisma.student.create({
-                    data:{
-                        student_code: req.body.student_code,
+                    data: {
+                        student_code: req.body.code,
                         telegram: req.body.telegram,
-                        password: req.body.password
-                    },
+                        password: req.body.pass
+                    }
                 })
 
-                if(newStu) return res.json({ok: true, message: "200"});
+                if(Object.values(newStu).length > 0) return res.json({ok: true, message: newStu });
                 else return res.json({ok: false,message:"Fail"})
                
             }
 
         } catch (error) {
+            console.log(error)
             res.status(500).json({
                 ok: false,
                 error: "Something went wrong!"
@@ -51,7 +54,7 @@ class StudentController {
                 }
             })
 
-            if(getStudent) return res.json({ok: true, data: getStudent});
+            if(Object.values(getStudent).length > 0) return res.json({ok: true, data: getStudent});
             else 
             return res.json({ok: false,message:"Fail"})
 
@@ -107,9 +110,7 @@ class StudentController {
                 }
             })
 
-            console.log(getAllService)
-
-            if(getAllService.length > 0) return res.json({ok: true, data: getAllService})
+            if(getAllService.length > 0) return res.json({ok: true, data: getAllService[0]})
             else return res.json({ok:false, message: "Fail"})
             
         } catch (error) {
@@ -121,6 +122,34 @@ class StudentController {
         finally{
             async () => await prisma.$disconnect()
         }
+    }
+    async updateStudent(req, res){
+
+        try {
+            
+            const update = await prisma.student.update({
+                where :{id: Number(req.body.id)},
+                data:{
+                    telegram: req.body.telegram
+                }
+            })
+
+            console.log(update)
+
+            if(Object.keys(update).length === 0) return res.json({ok:false, messaage: 'Fail'});
+            else return res.json({ok:true, messaage: update});
+
+        } catch (error) {
+            res.status(500).json({
+                ok: false,
+                error: error
+              });
+        }
+
+        finally{
+            async () => await prisma.$disconnect()
+        }
+
     }
 }
 

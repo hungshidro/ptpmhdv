@@ -21,7 +21,7 @@ model Service{
 model Student{
   id  Int     @id @default(autoincrement())
   student_code  String  @unique
-  telegram   String  @unique
+  telegram  String  
   password  String 
   service Service[]
 }

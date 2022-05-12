@@ -3,7 +3,8 @@ const studentController = require('../controller/StudentController');
 
 router.post('/add', studentController.addNewStudent);
 router.get('/:id',studentController.getStudent);
-router.post('/login/:id',studentController.validateStudent);
+router.put('/update',studentController.updateStudent);
+router.post('/login',studentController.validateStudent);
 router.get('/getAllService/:id', studentController.getAllServiceOfStudent)
 
 module.exports = router;
