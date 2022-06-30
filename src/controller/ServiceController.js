@@ -16,26 +16,18 @@ class ServiceController{
 
         try {
 
-            const startService = await prisma.service.create({
+            const startService = await prisma.registeredService.create({
                 data: {
                     student_id: Number(req.body.stu_id),
-                    class:{
-                        create:{
-                            class_code: req.body.code,
-                            name: convertToClass(req.body.code),
-                            day_of_week: Number(req.body.day),
-                            from: Number(req.body.from),
-                            to: Number(req.body.to)
-                        }
-                    }
+                    service_id: Number(req.body.service_id),
+                    day_of_week: Number(req.body.day),
+                    from: Number(req.body.from),
+                    to: Number(req.body.to),
                 }
             })
 
             if(Object.keys(startService).length === 0) return res.json({ok:false, messaage: 'Fail'});
             else {
-
-                runService(startService.id)
-
                 res.json({ok:true, messaage: startService});
             }
             
@@ -55,9 +47,9 @@ class ServiceController{
 
         try {
             
-            const stop = await prisma.service.update({
+            const stop = await prisma.registeredService.update({
                 where :{id: Number(req.body.id)},
-                data:{is_starting: 0}
+                data:{is_running: Number(0)}
             })
 
             if(Object.keys(stop).length === 0) return res.json({ok:false, messaage: 'Fail'});
@@ -80,9 +72,9 @@ class ServiceController{
 
         try {
             
-            const stop = await prisma.service.update({
+            const stop = await prisma.registeredService.update({
                 where :{id: Number(req.body.id)},
-                data:{is_starting: 1}
+                data:{is_running: Number(1)}
             })
 
             if(Object.keys(stop).length === 0) return res.json({ok:false, messaage: 'Fail'});
@@ -107,22 +99,44 @@ class ServiceController{
     async getService(req,res){
 
         try {
-            
-            const getService = await prisma.service.findMany({
+
+            const arrayservice = await prisma.registeredService.findMany({
                 where: {
-                    id: Number(req.params.id),
+                    student_id: Number(req.params.id),
+                    // is_running: Number(1)
                 },
                 include: {
-                    class: true
+                    student: {
+                        select: {
+                            id: true,
+                            student_code: true,
+                            telegram: true
+                        }
+                    },
+                    service: true
                 }
             })
-            
-            if(getService.length === 0) {
 
-                return res.json({ok:true, messaage: "Fail"});
-                
+            if (arrayservice.length === 0){
+                return res.json({ok: true, messaage:"Fail"});
             }
-            else return res.json({ok:true, message: getService});
+            else return res.json({ok:true, messaage: arrayservice});
+            
+            // const getService = await prisma.service.findMany({
+            //     where: {
+            //         id: Number(req.params.id),
+            //     },
+            //     include: {
+            //         class: true
+            //     }
+            // })
+            
+            // if(getService.length === 0) {
+
+            //     return res.json({ok:true, messaage: "Fail"});
+                
+            // }
+            // else return res.json({ok:true, message: getService});
 
         } catch (error) {
 

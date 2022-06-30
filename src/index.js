@@ -1,3 +1,4 @@
+const startServices = require('./util/start')
 const express = require('express');
 const cors = require('cors');
 const route = require('./routes');
@@ -9,10 +10,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-const port = 8080;
+const port = 8000;
 
 route(app);
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });
+
+startServices();

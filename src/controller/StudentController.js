@@ -97,20 +97,17 @@ class StudentController {
     async getAllServiceOfStudent(req, res){
         try {
 
-            const getAllService = await prisma.student.findMany({
-                where:{
-                    id: Number(req.params.id),
+            const arrayservice = await prisma.registeredService.findMany({
+                where: {
+                    student_id: Number(req.params.id),
+                    // is_running: Number(1)
                 },
-                include:{
-                    service:{
-                        include:{
-                            class: true
-                        }
-                    }
+                include: {
+                    service: true
                 }
             })
 
-            if(getAllService.length > 0) return res.json({ok: true, data: getAllService[0]})
+            if(arrayservice.length > 0) return res.json({ok: true, data: arrayservice})
             else return res.json({ok:false, message: "Fail"})
             
         } catch (error) {
