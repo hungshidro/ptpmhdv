@@ -79,7 +79,6 @@ class ServiceController{
 
             if(Object.keys(stop).length === 0) return res.json({ok:false, messaage: 'Fail'});
             else {
-                runService(Number(req.body.id))
                 res.json({ok:true, messaage: stop});
             }
 
